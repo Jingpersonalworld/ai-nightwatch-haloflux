@@ -1,0 +1,653 @@
+/* Modal / dialog neumorphic components. Owned by the modals agent.
+   Used by BridgeModal.tsx and HostLinkModal.tsx. All colours come from tokens.css.
+   `.pill` / `.pill.on` stay defined in index.css; here they are only scoped for layout
+   (icon + label, hit area, wrapping) inside `.nm-modal`. */
+
+/* ---------- overlay + shell ---------- */
+.nm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  background: rgba(230, 235, 242, 0.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: nm-fade 0.18s ease-out;
+}
+
+.nm-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 900px;
+  max-height: min(88vh, calc(100dvh - 2 * var(--sp-4)));
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--nm-bg-hi);
+  box-shadow: var(--nm-raised);
+  color: var(--ink-2);
+  font-family: var(--font-ui);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  animation: nm-pop 0.2s ease-out;
+}
+
+.nm-modal--md {
+  max-width: 780px;
+}
+
+@keyframes nm-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes nm-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+/* ---------- header ---------- */
+.nm-modal__head {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--nm-edge);
+}
+
+.nm-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+/* the close button never shrinks or wraps, the title wraps instead */
+.nm-modal__bar > .pill {
+  flex: none;
+  white-space: nowrap;
+}
+
+.nm-modal__title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+}
+
+.nm-modal__title > svg {
+  flex: none;
+  color: var(--teal);
+}
+
+.nm-modal__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* ---------- body ---------- */
+.nm-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: var(--sp-5);
+  overscroll-behavior: contain;
+}
+
+.nm-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.nm-grid-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-4);
+}
+
+.nm-span-all {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  .nm-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- buttons (layout only; look comes from .pill in index.css) ---------- */
+.nm-modal .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--hit);
+  max-width: 100%;
+  font-family: var(--font-ui);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.nm-modal .pill > svg {
+  flex: none;
+}
+
+/* emphasised action (download / save). Not `.on`, so it is never read as a selected tab. */
+.nm-modal .pill.nm-primary {
+  color: var(--teal);
+  font-weight: 700;
+}
+
+/* destructive / offensive action */
+.nm-modal .pill.nm-danger,
+.nm-modal .pill.nm-danger:hover {
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* segmented tab track: a recessed groove holding raised / pressed pills */
+.nm-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px;
+  border-radius: var(--r-md);
+  background: var(--nm-bg-lo);
+  box-shadow: var(--nm-inset-sm);
+}
+
+/* ---------- wells and cards ---------- */
+.nm-well {
+  min-width: 0;
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--nm-bg-lo);
+  box-shadow: var(--nm-inset-sm);
+}
+
+.nm-card {
+  min-width: 0;
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--nm-bg-hi);
+  box-shadow: var(--nm-raised-sm);
+}
+
+.nm-feature {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3) var(--sp-4);
+}
+
+.nm-feature__text {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.nm-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-2);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.nm-section-title--blue {
+  color: var(--blue);
+}
+
+.nm-section-title--red {
+  color: var(--red);
+}
+
+.nm-modal p {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.nm-modal p + p {
+  margin-top: var(--sp-2);
+}
+
+.nm-modal strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.nm-modal .nm-muted {
+  color: var(--dim);
+  font-size: var(--fs-sm);
+}
+
+.nm-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin: 0;
+  padding-left: var(--sp-5);
+  list-style: disc;
+  font-size: var(--fs-md);
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.nm-list li::marker {
+  color: var(--teal-fx);
+}
+
+/* round icon seat, raised */
+.nm-chip {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--nm-bg-hi);
+  box-shadow: var(--nm-raised-xs);
+}
+
+.nm-chip--blue {
+  color: var(--blue);
+}
+
+.nm-chip--red {
+  color: var(--red);
+}
+
+.nm-chip--teal {
+  color: var(--teal);
+}
+
+.nm-chip--lg {
+  width: 36px;
+  height: 36px;
+}
+
+/* small caps badge: the only place where uppercase micro-labels survive */
+.nm-badge {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--nm-bg-hi);
+  box-shadow: var(--nm-raised-xs);
+  font-family: var(--font-ui);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.nm-badge--teal {
+  color: var(--teal);
+}
+
+.nm-badge--amber {
+  color: var(--amber);
+}
+
+/* ---------- form controls ---------- */
+.nm-team__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+
+.nm-team__head .nm-section-title {
+  margin: 0;
+}
+
+.nm-field + .nm-field {
+  margin-top: var(--sp-3);
+}
+
+.nm-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.nm-input,
+.nm-select {
+  display: block;
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--nm-bg-hi);
+  box-shadow: var(--nm-inset-sm);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-md);
+  line-height: 1.4;
+}
+
+.nm-input--mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.nm-input--blue {
+  color: var(--blue);
+}
+
+.nm-input--red {
+  color: var(--red);
+}
+
+.nm-select-wrap {
+  position: relative;
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.nm-select {
+  width: auto;
+  max-width: 100%;
+  padding-right: 34px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.nm-select-wrap > svg {
+  position: absolute;
+  top: 50%;
+  right: 11px;
+  transform: translateY(-50%);
+  color: var(--ink-2);
+  pointer-events: none;
+}
+
+.nm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.nm-actions__fire {
+  display: flex;
+  flex: 1 1 380px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-2) var(--sp-3);
+  min-width: 0;
+}
+
+.nm-actions__fire .nm-label {
+  flex: 1 1 100%;
+  margin: 0;
+  text-align: right;
+}
+
+/* validation message: icon + text + side bar, not colour alone */
+.nm-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: 10px var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--nm-bg-hi);
+  box-shadow: var(--nm-raised-xs), inset 4px 0 0 var(--red-fx);
+  color: var(--red);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.nm-alert > svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* ---------- code ---------- */
+.nm-modal :not(pre) > code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(30, 41, 56, 0.07);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+
+.nm-code {
+  display: block;
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  overflow: auto;
+  border-radius: var(--r-md);
+  background: var(--nm-bg-lo);
+  box-shadow: var(--nm-inset-sm);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  tab-size: 2;
+  white-space: pre;
+}
+
+/* a code block that sits inside a well gets the lighter seat so the two insets do not merge */
+.nm-well .nm-code {
+  background: var(--nm-bg);
+}
+
+/* short shell snippets in prose: wrap instead of hiding the tail behind a scrollbar */
+.nm-code--wrap {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.nm-code--file {
+  max-height: min(58vh, 560px);
+  color: var(--ink);
+}
+
+.nm-tok-c {
+  color: var(--dim);
+}
+
+.nm-tok-cmd {
+  color: var(--teal);
+  font-weight: 600;
+}
+
+.nm-tok-flag {
+  color: var(--blue);
+}
+
+/* ---------- file tabs toolbar ---------- */
+.nm-filebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.nm-filebar__path {
+  flex: 1 1 260px;
+  min-width: 0;
+  color: var(--dim);
+  font-size: var(--fs-sm);
+}
+
+.nm-filebar__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* ---------- red node roster ---------- */
+.nm-roster {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-3);
+}
+
+@media (min-width: 640px) {
+  .nm-roster {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.nm-node {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px var(--sp-3);
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  background: var(--nm-bg-hi);
+  box-shadow: var(--nm-raised-xs);
+  font-size: var(--fs-sm);
+}
+
+.nm-node__id {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--sp-2);
+  min-width: 0;
+}
+
+.nm-node__ip {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.nm-node__tool {
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+.nm-node__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--sp-2);
+  color: var(--dim);
+  font-size: var(--fs-xs);
+}
+
+.nm-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.nm-status--locked {
+  color: var(--blue);
+}
+
+.nm-status--active {
+  color: var(--red);
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 520px) {
+  .nm-overlay {
+    padding: 12px;
+  }
+
+  .nm-modal {
+    max-height: calc(100dvh - 24px);
+  }
+
+  .nm-modal__head {
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  .nm-modal__body {
+    padding: var(--sp-4);
+  }
+
+  .nm-actions > .pill {
+    flex: 1 1 100%;
+  }
+
+  .nm-actions__fire {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .nm-actions__fire .nm-label {
+    flex: 1 1 100%;
+    text-align: left;
+  }
+
+  .nm-actions__fire .nm-select-wrap {
+    flex: 1 1 100%;
+  }
+
+  .nm-actions__fire .nm-select {
+    width: 100%;
+  }
+
+  .nm-actions__fire .pill {
+    flex: 1 1 100%;
+  }
+
+  .nm-tabs {
+    display: flex;
+    width: 100%;
+  }
+}

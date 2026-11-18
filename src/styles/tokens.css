@@ -1,0 +1,116 @@
+/* NIGHTWATCH x HALOFLUX — cool-white neumorphism tokens.
+   Source of truth for the CSS side; src/utils/theme.ts mirrors the colours for canvas drawing.
+   Rules from the neumorphism skill: one monochrome surface, paired light/dark shadows,
+   teal primary, WCAG 2.2 AA text, visible focus. */
+:root {
+  color-scheme: light;
+
+  /* surface (cool white). Light source is top-left. */
+  --nm-bg: #e6ebf2;
+  --nm-bg-hi: #eef2f8;
+  --nm-bg-lo: #dce3ec;
+  --nm-edge: rgba(30, 41, 56, 0.1);
+  --nm-sh-dark: rgba(163, 177, 198, 0.7);
+  --nm-sh-light: rgba(255, 255, 255, 0.95);
+
+  /* elevation recipes */
+  --nm-raised: 7px 7px 16px var(--nm-sh-dark), -7px -7px 16px var(--nm-sh-light);
+  --nm-raised-sm: 4px 4px 9px var(--nm-sh-dark), -4px -4px 9px var(--nm-sh-light);
+  --nm-raised-xs: 2px 2px 5px var(--nm-sh-dark), -2px -2px 5px var(--nm-sh-light);
+  --nm-inset: inset 5px 5px 10px var(--nm-sh-dark), inset -5px -5px 10px var(--nm-sh-light);
+  --nm-inset-sm: inset 3px 3px 6px var(--nm-sh-dark), inset -3px -3px 6px var(--nm-sh-light);
+
+  /* text. Every colour below is >= 4.5:1 on --nm-bg, --nm-bg-lo and --nm-bg-hi. */
+  --ink: #1e2938;
+  --ink-2: #3f5068;
+  --dim: #4a5a71;
+
+  /* semantic hues: plain name = text-safe, -fx = saturated for strokes/fills only */
+  --blue: #1a56c2;
+  --blue-fx: #2563eb;
+  --red: #c0143f;
+  --red-fx: #ff2157;
+  --teal: #006666;
+  --teal-fx: #0a8f8f;
+  --violet: #5b38b8;
+  --violet-fx: #7c4dff;
+  --amber: #8f5200;
+  --amber-fx: #fe9900;
+  --green: #00702b;
+  --green-fx: #00a63d;
+  --pink: #a31d5c;
+
+  /* legacy names still referenced by inline styles / older markup */
+  --cyan: var(--blue);
+  --white: var(--ink);
+  --text: var(--ink-2);
+  --faint: var(--dim);
+  --line: var(--nm-edge);
+  --line2: rgba(30, 41, 56, 0.18);
+
+  /* type: humanist sans for words, mono only for data (IPs, times, commands, counters) */
+  --font-ui: "Manrope Variable", "Manrope", "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC",
+    system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, "Microsoft YaHei UI", monospace;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 13px;
+  --fs-lg: 15px;
+  --fs-xl: 22px;
+
+  /* spacing (compact density) and radii */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+
+  /* hit area: 32px on pointer devices, 40px on touch (see responsive.css) */
+  --hit: 32px;
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 90, 113, 0.4) transparent;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--nm-bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--fs-md);
+  line-height: 1.45;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.mono,
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* one focus ring everywhere; shadows alone never mark focus */
+:where(button, a, select, input, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
